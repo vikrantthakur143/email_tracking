@@ -10,4 +10,5 @@ return [
     'db_user' => 'your_db_user',
     'db_pass' => 'your_db_password',
     'db_charset' => 'utf8mb4',
+    'pixelBaseUrl' => 'https://yourserver.com/pixel.php',
 ];

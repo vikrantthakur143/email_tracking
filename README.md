@@ -24,16 +24,16 @@ accept-language, and timestamp — stored in MySQL.
    systemctl enable mariadb --now
    git clone https://github.com/vikrantthakur143/email_tracking.git
    ```
-  ```mysql
-  CREATE USER 'email_tracking'@'localhost' IDENTIFIED BY 'your_secure_password';
-  GRANT ALL PRIVILEGES ON email_tracking.* TO 'email_tracking'@'localhost';
-  FLUSH PRIVILEGES;
-  ```
+   ```mysql
+   CREATE USER 'email_tracking'@'localhost' IDENTIFIED BY 'your_secure_password';
+   GRANT ALL PRIVILEGES ON email_tracking.* TO 'email_tracking'@'localhost';
+   FLUSH PRIVILEGES;
+   ```
 
 
 2. **Create the database:**
    ```bash
-   mysql -u root -p < schema.sql
+   mysql -u root < schema.sql
    ```
 
 3. **Edit `config.php`** with your real DB host/user/password.

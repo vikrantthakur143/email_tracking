@@ -21,7 +21,7 @@ function create_tracking_pixel(
     ?string $recipient,
     ?string $subject,
     ?string $campaign,
-    string $pixelBaseUrl = 'https://yourserver.com/pixel.php'
+    string $pixelBaseUrl = $config['pixelBaseUrl']
 ): array {
     $config = require __DIR__ . '/config.php';
 
