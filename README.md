@@ -8,28 +8,42 @@ accept-language, and timestamp — stored in MySQL.
 - `schema.sql` — creates the database and two tables:
   - `tracked_emails` — one row per email you send (holds the tracking UUID)
   - `email_opens` — one row per pixel hit (the actual open event data)
-- `config.php` — your DB credentials (edit this first)
-- `create_tracking.php` — call this when sending an email to get a tracking
+- `public/config.php` — your DB credentials (edit this first)
+- `public/create_tracking.php` — call this when sending an email to get a tracking
   UUID + ready-made `<img>` tag
-- `pixel.php` — the public endpoint your emails hit; logs the open and
+- `public/pixel.php` — the public endpoint your emails hit; logs the open and
   returns a real 1x1 transparent GIF
-- `dashboard.php` — minimal password-gated page to view recent opens
+- `public/dashboard.php` — minimal password-gated page to view recent opens
 
 ## Setup
 
-1. **Create the database:**
+1. **Setup Server**
+   ```bash
+   dnf install httpd php php-mysqlnd mariadb-server git
+   systemctl enable httpd --now
+   systemctl enable mariadb --now
+   git clone https://github.com/vikrantthakur143/email_tracking.git
+   ```
+  ```mysql
+  CREATE USER 'email_tracking'@'localhost' IDENTIFIED BY 'your_secure_password';
+  GRANT ALL PRIVILEGES ON email_tracking.* TO 'email_tracking'@'localhost';
+  FLUSH PRIVILEGES;
+  ```
+
+
+2. **Create the database:**
    ```bash
    mysql -u root -p < schema.sql
    ```
 
-2. **Edit `config.php`** with your real DB host/user/password.
+3. **Edit `config.php`** with your real DB host/user/password.
 
-3. **Upload `pixel.php` and `config.php`** to your web server (e.g.
+4. **Upload `pixel.php` and `config.php`** to your web server (e.g.
    `https://yourserver.com/pixel.php`). Keep `create_tracking.php` and
    `dashboard.php` off the public internet, or protect them — they aren't
    meant to be hit by random visitors.
 
-4. **When sending an email**, generate a tracking pixel first:
+5. **When sending an email**, generate a tracking pixel first:
    ```bash
    php create_tracking.php "user@example.com" "Weekly Newsletter" "july-2026"
    ```
@@ -40,13 +54,13 @@ accept-language, and timestamp — stored in MySQL.
    $emailHtml .= $tracking['pixel_tag'];
    ```
 
-5. **Embed the returned tag** at the bottom of the email's HTML body:
+6. **Embed the returned tag** at the bottom of the email's HTML body:
    ```html
    <img src="https://yourserver.com/pixel.php?id=550e8400-e29b-41d4-a716-446655440000"
         width="1" height="1" alt="" style="display:none;">
    ```
 
-6. **View results** at `dashboard.php` (set a real password in that file
+7. **View results** at `dashboard.php` (set a real password in that file
    first, or wrap it with proper auth / basic auth in your webserver config).
 
 ## Notes and limitations worth knowing
