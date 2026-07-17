@@ -1,0 +1,13 @@
+<?php
+// config.php - database connection settings.
+// Keep this file OUTSIDE your public web root if possible, or at minimum
+// make sure your webserver is configured to never serve .php as plain text
+// (Apache/Nginx do this by default when PHP is running).
+
+return [
+    'db_host' => '127.0.0.1',
+    'db_name' => 'email_tracking',
+    'db_user' => 'your_db_user',
+    'db_pass' => 'your_db_password',
+    'db_charset' => 'utf8mb4',
+];
